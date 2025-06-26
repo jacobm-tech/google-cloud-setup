@@ -79,12 +79,11 @@ echo 60 | sudo tee /proc/sys/net/ipv4/tcp_keepalive_time   ;# Set keepalive time
 echo 10 | sudo tee /proc/sys/net/ipv4/tcp_keepalive_intvl   ;# 10 seconds between probes
 echo 3 | sudo tee /proc/sys/net/ipv4/tcp_keepalive_probes   ;# 3 probes max
 
-# put in 
-# /etc/sysctl.d/10-tcp-keepalive.conf 
+# put in /etc/sysctl.d/10-tcp-keepalive.conf for permanent effect
 
-sudo echo "net.ipv4.tcp_keepalive_time = 60" >> /etc/sysctl.d/10-tcp-keepalive.conf 
-sudo echo "net.ipv4.tcp_keepalive_intvl = 10" >> /etc/sysctl.d/10-tcp-keepalive.conf 
-sudo echo "net.ipv4.tcp_keepalive_probes = 3" >> /etc/sysctl.d/10-tcp-keepalive.conf 
+echo "net.ipv4.tcp_keepalive_time = 60" | sudo tee -a /etc/sysctl.d/10-tcp-keepalive.conf
+echo "net.ipv4.tcp_keepalive_intvl = 10" | sudo tee -a /etc/sysctl.d/10-tcp-keepalive.conf 
+echo "net.ipv4.tcp_keepalive_probes = 3" | sudo tee -a /etc/sysctl.d/10-tcp-keepalive.conf 
 
 sudo sysctl --system # to reload these rules
 
