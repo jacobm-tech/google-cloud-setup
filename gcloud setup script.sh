@@ -30,12 +30,16 @@ sudo apt-get --assume-yes install nasm
 sudo apt-get --assume-yes install xfce4
 sudo apt-get --assume-yes install xserver-xorg-dev
 
+
 sudo apt-get --assume-yes install locate
 sudo updatedb
 
 # Xrdp install.
 
 git clone https://github.com/neutrinolabs/xrdp.git
+
+sudo apt-get --assume-yes install libx264-dev
+
 
 cd xrdp
 ./bootstrap
