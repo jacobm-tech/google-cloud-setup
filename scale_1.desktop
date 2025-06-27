@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Exec=/usr/local/bin/scale.sh 1
-Icon=/usr/share/icons/hicolor/512x512/stock/text/number-one.png
+Icon=/usr/share/icons/hicolor/512x512/stock/text/number-1.png
 StartupNotify=false
 Terminal=false
 Categories=Utility;X-XFCE;X-Xfce-Toplevel;
