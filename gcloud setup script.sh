@@ -1,3 +1,19 @@
+# Install github cli
+
+(type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
+        && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+	&& sudo mkdir -p -m 755 /etc/apt/sources.list.d \
+	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+	&& sudo apt update \
+	&& sudo apt install gh -y
+
+# Get icons and script for setting display scale
+git clone https://github.com/jacobm-tech/google-cloud-setup
+
+
 # Basic packages
 
 sudo apt-get --assume-yes install autoconf
@@ -88,14 +104,11 @@ echo "net.ipv4.tcp_keepalive_probes = 3" | sudo tee -a /etc/sysctl.d/10-tcp-keep
 sudo sysctl --system # to reload these rules
 
 # Set up xfce4.
-
-sudo passwd jacob  # set password here
-su jacob
-echo xfce4-session ~/.xsession # necessary on Ubuntu 24.04
-
-# group tsusers is checkd by both xrdp and the policy kit rule below
-sudo addgroup tsusers
-sudo adduser jacob tsusers
+cd ~/google-cloud-setup
+sudo cp default.xml /etc/xdg/xfce4/panel/default.xml 
+sudo cp scale*.desktop /usr/local/share/applications/
+sudo cp scale.sh /usr/local/bin/scale.sh
+sudo cp number*.png /usr/share/icons/hicolor/512x512/stock/text/
 
 # Stop annoying color management authentication popup with xrdp
 
@@ -107,8 +120,6 @@ sudo adduser jacob tsusers
 ############ Ubuntu 24.04 ################################
 sudo echo -e 'polkit.addRule(function(action, subject){\n    if(action.id.match(/^org\.freedesktop\.color\-manager\.create\-*/))\n        return polkit.Result.YES;\n    if(action.id.match(/^org\.freedesktop\.color\-manager\.delete\-*/))\n        return polkit.Result.YES;\n    if(action.id.match(/^org\.freedesktop\.color\-manager\.modify\-*/))\n        return polkit.Result.YES;\n});' | sudo tee -a /etc/polkit-1/rules.d/99-allow_colord.rules > /dev/null
 ##########################################################
-
-
 
 # Python install
 
@@ -154,18 +165,16 @@ sudo /usr/local/bin/pip3.13 install pygame
 
 sudo /usr/local/bin/pip3.13 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 
-# Install github cli
 
-(type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
-        && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-        && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-	&& sudo mkdir -p -m 755 /etc/apt/sources.list.d \
-	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-	&& sudo apt update \
-	&& sudo apt install gh -y
+### Set up any users needed in this way
 
-# Get icons and script for setting display scale
-git clone https://github.com/jacobm-tech/google-cloud-setup
+sudo adduser jacob  # set password here
+echo xfce4-session | sudo tee ~jacob/.xsession # necessary on Ubuntu 24.04
+
+# group tsusers is checkd by both xrdp and the policy kit rule below
+sudo addgroup tsusers
+sudo adduser jacob tsusers
+
+
+
 
