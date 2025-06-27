@@ -54,16 +54,14 @@ sed -i 's/^#runtime_user=xrdp/runtime_user=xrdp/' xrdp/xrdp.ini
 sed -i 's/^#runtime_group=xrdp/runtime_group=xrdp/' xrdp/xrdp.ini
 sed -i 's/^#SessionSockdirGroup=xrdp/SessionSockdirGroup=xrdp/' sesman/sesman.ini
 
-sudo make install
-
 # Make a bigger font for the login screen
 
 xrdp-mkfv1 -p36 /usr/share/fonts/truetype/ubuntu/UbuntuMono-B.ttf sans-36.fv1
 sudo cp sans-36.fv1 /usr/local/share/xrdp
 sudo chmod og+r /usr/local/share/xrdp/sans-36.fv1
 
-# TODO
-# need to edit xrdp.ini
+sed -i '/#fv1_select.*/a fv1_select=0:sans-36.fv1' xrdp/xrdp.ini
+sudo make install
 
 cd ..
 
@@ -110,6 +108,7 @@ sudo sysctl --system # to reload these rules
 # Set up xfce4.
 cd ~/google-cloud-setup
 sudo cp default.xml /etc/xdg/xfce4/panel/default.xml 
+sudo mkdir /usr/local/share/applications/
 sudo cp scale*.desktop /usr/local/share/applications/
 sudo cp scale.sh /usr/local/bin/scale.sh
 sudo cp number*.png /usr/share/icons/hicolor/512x512/stock/text/
