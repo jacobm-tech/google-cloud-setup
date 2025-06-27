@@ -79,12 +79,11 @@ echo 60 | sudo tee /proc/sys/net/ipv4/tcp_keepalive_time   ;# Set keepalive time
 echo 10 | sudo tee /proc/sys/net/ipv4/tcp_keepalive_intvl   ;# 10 seconds between probes
 echo 3 | sudo tee /proc/sys/net/ipv4/tcp_keepalive_probes   ;# 3 probes max
 
-# put in 
-# /etc/sysctl.d/10-tcp-keepalive.conf 
+# put in /etc/sysctl.d/10-tcp-keepalive.conf for permanent effect
 
-# net.ipv4.tcp_keepalive_time = 60
-# net.ipv4.tcp_keepalive_intvl = 10
-# net.ipv4.tcp_keepalive_probes = 3
+echo "net.ipv4.tcp_keepalive_time = 60" | sudo tee -a /etc/sysctl.d/10-tcp-keepalive.conf
+echo "net.ipv4.tcp_keepalive_intvl = 10" | sudo tee -a /etc/sysctl.d/10-tcp-keepalive.conf 
+echo "net.ipv4.tcp_keepalive_probes = 3" | sudo tee -a /etc/sysctl.d/10-tcp-keepalive.conf 
 
 sudo sysctl --system # to reload these rules
 
@@ -166,4 +165,7 @@ sudo /usr/local/bin/pip3.13 install torch torchvision torchaudio --index-url htt
 	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
 	&& sudo apt update \
 	&& sudo apt install gh -y
- 
+
+# Get icons and script for setting display scale
+git clone https://github.com/jacobm-tech/google-cloud-setup
+
